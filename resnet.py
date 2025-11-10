@@ -44,6 +44,8 @@ class BasicBlock(nn.Module):
     
 
 class ResNet34(nn.Module):
+    """34 layer architecture with number of filters as per the paper"""
+    
     def __init__(self, BasicBlock, layers, num_classes):
         super(ResNet34, self).__init__()
 
