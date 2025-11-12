@@ -28,17 +28,17 @@ class BasicBlock(nn.Module):
 
         
     def forward(self, x):
-        """Forward function{H(x)} for a residual block{F(x)} with shortcut(x) addition"""
-        identity = x
+        """Forward function for a residual block with shortcut addition"""
+        identity = x # X
 
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
 
         out = self.conv2(out)
-        out = self.bn2(out)
+        out = self.bn2(out) # F(X)
 
-        out += self.shortcut(identity)
+        out += self.shortcut(identity) # F(X) + X
 
         out = self.relu(out)
 
@@ -65,7 +65,6 @@ class ResNet34(nn.Module):
         self.layer_3 = self._make_layer(block, 64, layers[2], 2)
         self.layer_4 = self._make_layer(block, 64, layers[3], 2)
         
-
         # average pool and fully connected layer 
         self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
         self.fc = nn.Linear(64, num_classes)
@@ -92,10 +91,10 @@ class ResNet34(nn.Module):
         out = self.bn1(out)
         out = self.relu(out)
 
-        out = self.layer_1(out)
-        out = self.layer_2(out)
+        out = self.layer_1(out) 
+        out = self.layer_2(out) 
         out = self.layer_3(out)
-        out = self.layer_4(out)
+        out = self.layer_4(out) 
 
         out = self.avg_pool(out)
         out = torch.flatten(out, 1)
