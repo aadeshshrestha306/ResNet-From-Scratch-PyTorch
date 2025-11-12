@@ -9,24 +9,26 @@ class BasicBlock(nn.Module):
         super(BasicBlock, self).__init__()
         
         # 1st layer 
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, stride=stride)
         self.bn1 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
 
         # 2nd layer
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, stride=1)
         self.bn2 = nn.BatchNorm2d(out_channels)
         
         self.shortcut = nn.Sequential()
 
+        # reduces dimensionalty of the input after each residual block
         if stride != 1 or in_channels != out_channels:
             self.shortcut = nn.Sequential(
-                nn.conv2d(in_channels, out_channels, kernel_size = 3, stride = stride),
+                nn.Conv2d(in_channels, out_channels, kernel_size = 1, stride = stride),
                 nn.BatchNorm2d(out_channels)
             )
 
         
     def forward(self, x):
+        """Forward function{H(x)} for a residual block{F(x)} with shortcut(x) addition"""
         identity = x
 
         out = self.conv1(x)
@@ -46,7 +48,7 @@ class BasicBlock(nn.Module):
 class ResNet34(nn.Module):
     """34 layer architecture with number of filters as per the paper"""
     
-    def __init__(self, BasicBlock, layers, num_classes):
+    def __init__(self, block, layers, num_classes):
         super(ResNet34, self).__init__()
 
         self.in_channels = 16
@@ -58,18 +60,18 @@ class ResNet34(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
         # the real layers
-        self.layer_1 = self._make_layer(BasicBlock, 16, layers[0], 1)
-        self.layer_2 = self._make_layer(BasicBlock, 32, layers[1], 2)
-        self.layer_3 = self._make_layer(BasicBlock, 64, layers[2], 2)
-        self.layer_4 = self._make_layer(BasicBlock, 64, layers[3], 2)
+        self.layer_1 = self._make_layer(block, 16, layers[0], 1)
+        self.layer_2 = self._make_layer(block, 32, layers[1], 2)
+        self.layer_3 = self._make_layer(block, 64, layers[2], 2)
+        self.layer_4 = self._make_layer(block, 64, layers[3], 2)
         
 
         # average pool and fully connected layer 
         self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
-        self.fc = nn.Linear(64, num_classes) # for 10 classes of CIFAR-10 dataset
+        self.fc = nn.Linear(64, num_classes)
 
 
-    def _make_layer(self, BasicBlock, out_channels, num_block, stride):
+    def _make_layer(self, block, out_channels, num_block, stride):
         """Function that creates the stack of ResNet layers"""
 
         strides = [stride] + [1] * (num_block - 1)
@@ -77,16 +79,15 @@ class ResNet34(nn.Module):
 
         for current_stride in strides:
             layers.append(
-                BasicBlock(self.in_channels, out_channels, current_stride)
+                block(self.in_channels, out_channels, current_stride)
             )
-
             self.in_channels = out_channels
-        
+
         return nn.Sequential(*layers)
     
 
     def forward(self, x):
-        """Forward Pass for CIFAR-10"""
+        """Forward Pass for ResNet"""
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
@@ -102,5 +103,4 @@ class ResNet34(nn.Module):
 
         return out
     
-def resnet34():
-    ResNet34(BasicBlock, [3, 4, 6, 3], num_classes=10)
+resnet34 = ResNet34(BasicBlock, [3, 4, 6, 3], num_classes=10)

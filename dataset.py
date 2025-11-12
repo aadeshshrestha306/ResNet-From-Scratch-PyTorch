@@ -2,13 +2,16 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
-mean = [0.4914, 0.4822, 0.4465]
+# Actual mean and standard deviation values used to train resnet on CIFAR10
+# Batch size can be adjusted on stronger GPUs
+mean = [0.4914, 0.4822, 0.4465] 
 std = [0.2471, 0.2435, 0.2616]
 batch_size = 64
 num_workers = 2 
 
 train_transform = transforms.Compose([
-    transforms.RandomCrop(32, padding=4),
+    transforms.Pad(4),
+    transforms.RandomCrop(32),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize(mean=mean, std=std)
