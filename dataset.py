@@ -9,6 +9,7 @@ std = [0.2471, 0.2435, 0.2616]
 batch_size = 64
 num_workers = 2 
 
+# For augmentation, 4 pixels are padded on each side and a (32*32) crop is taken
 train_transform = transforms.Compose([
     transforms.Pad(4),
     transforms.RandomCrop(32),
@@ -16,7 +17,6 @@ train_transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=mean, std=std)
 ])
-
 
 test_transform = transforms.Compose([
     transforms.ToTensor(),
