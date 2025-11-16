@@ -10,9 +10,9 @@ def main():
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
-    scheduler = StepLR(optimizer=optimizer, step_size=3000, gamma=0.1)
+    scheduler = StepLR(optimizer=optimizer, step_size=3000, gamma=0.1) # multiplies learning rate by 0.1 after 3000 steps
 
-    num_epochs = 32
+    num_epochs = 32 # Total steps = 32*391(total input/batch size) = 12500
     accuracy = []
     losses = []
 
