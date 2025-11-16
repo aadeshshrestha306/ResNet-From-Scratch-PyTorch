@@ -77,4 +77,4 @@ The 34 and 50 layer version, is trained on CIFAR-10 dataset for 32 epochs(12500 
     </tbody>
 </table>
 
-Fair to say for  deep neural networks 
+The models were trained on a Nvidia GTX 1050ti. This is just a small scale implementation to understand ResNet better.
