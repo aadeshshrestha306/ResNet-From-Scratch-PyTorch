@@ -59,7 +59,7 @@ class BottleNeck(nn.Module):
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, stride=1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_channels)
         
-        # 3rd layer (Expand), the output channel/filters increases by 4 times
+        # 3rd layer (Expand), the output channels increases by 4 times
         self.conv3 = nn.Conv2d(out_channels, out_channels*self.expansion, kernel_size=1, padding=0, stride=1, bias=False)
         self.bn3 = nn.BatchNorm2d(out_channels*self.expansion)
 
