@@ -50,4 +50,3 @@ test_loader = DataLoader(
     shuffle=False,      
     num_workers=num_workers
 )
-
