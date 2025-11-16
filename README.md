@@ -8,7 +8,7 @@ The 34 and 50 layer version, is trained on CIFAR-10 dataset for 32 epochs(12500 
 
 <table>
     <tr>
-        <th></th>
+        <th>Model</th>
         <th>Epochs</th>
         <th>Loss</th>
         <th>Accuracy</th>
@@ -76,3 +76,5 @@ The 34 and 50 layer version, is trained on CIFAR-10 dataset for 32 epochs(12500 
         </tr>
     </tbody>
 </table>
+
+Fair to say for  deep neural networks 
