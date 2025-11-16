@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 # Batch size can be adjusted on stronger GPUs
 mean = [0.4914, 0.4822, 0.4465] 
 std = [0.2471, 0.2435, 0.2616]
-batch_size = 64
+batch_size = 128
 num_workers = 2 
 
 # For augmentation, 4 pixels are padded on each side and a (32*32) crop is taken
